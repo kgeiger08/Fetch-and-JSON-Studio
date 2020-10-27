@@ -5,18 +5,19 @@ window.addEventListener('load', function(event) {
         response.json().then(function(json){
         console.log(json);
         const container = document.getElementById("container");
-        let astronauts = `Number of Astronauts: ${json.length}`
+        let astronauts = `Number of Astronauts: ${json.length}`;
+            json.sort(function(a,b) {
+                return b.hoursInSpace - a.hoursInSpace;
+            });
         for (astronaut of json) {
-            // if (astronaut.active === true) {
-            //     astronaut.active.color = "green";
-            // }
+
             astronauts += `
             <div class="astronaut">
             <div class="bio">
-               <h3>${astronauts.firstName}${astronauts.lastName}</h3>
+               <h3>${astronaut.firstName} ${astronaut.lastName}</h3>
                <ul>
                 <li>Hours in space: ${astronaut.hoursInSpace}</li>
-                <li>Active: ${astronaut.active}</li>
+                <li>Active: ${checkIfActive(astronaut)}</li>
                 <li>Skills: ${astronaut.skills.join(", ")} </li>
                </ul>
             </div>
@@ -28,3 +29,11 @@ window.addEventListener('load', function(event) {
         })
     });
 });
+
+function checkIfActive(astronaut) {
+    if(astronaut.active === true) {
+        return `<span style="color:green">${astronaut.active}</span>`;
+    } else {
+        return astronaut.active;
+    }
+}
